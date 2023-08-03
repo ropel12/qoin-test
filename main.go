@@ -53,7 +53,6 @@ func dice(players int, dices int) {
 			} else if move > 1 {
 				diceplayers[i] = []int{}
 				prevpoint = playerpoint[i]
-				fmt.Println("pemain", i, "Isi", evaluatedice, move)
 				for j := 0; j < lengthdice[i]; j++ {
 					fmt.Println()
 					roll := rand.Intn(6) + 1
@@ -80,18 +79,30 @@ func dice(players int, dices int) {
 		finish := 0
 		fmt.Println("\tSetelah Evaluasi:")
 		for player, dice := range evaluatedice {
-			fmt.Println(dice)
 			fmt.Printf("\t Pemain #%d (%d):%s \n", player, playerpoint[player], Tostring(dice))
 			lengthdice[player] = len(dice)
 			if len(dice) == 0 {
 				finish++
 			}
 			evaluatedice[player] = []int{}
+			diceplayers[player] = dice
 		}
 		if finish == players-1 {
 			break
 		}
 	}
+
+	var winner, loser int
+	for player, val := range playerpoint {
+		if winner < val && len(diceplayers[player]) == 0 {
+			winner = player
+		}
+		if len(diceplayers[player]) > 0 {
+			loser = player
+		}
+	}
+	fmt.Printf("Game berakhir karena hanya pemain #%d yang memiliki dadu.\n", loser)
+	fmt.Printf("Game dimenangkan oleh pemain #%d karena memiliki poin lebih banyak dari pemain lainnya\n", winner)
 }
 
 func main() {
