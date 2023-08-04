@@ -54,13 +54,14 @@ func dice(players int, dices int) {
 				diceplayers[i] = []int{}
 				prevpoint = playerpoint[i]
 				for j := 0; j < lengthdice[i]; j++ {
-					fmt.Println()
 					roll := rand.Intn(6) + 1
 					if roll == 6 {
 						playerpoint[i]++
 					} else if roll == 1 {
 						if i == players {
-							evaluatedice[1] = append(evaluatedice[1], 1)
+							if lengthdice[i+1] > 0 {
+								evaluatedice[1] = append(evaluatedice[1], 1)
+							}
 						} else {
 							if lengthdice[i+1] > 0 {
 								evaluatedice[i+1] = append(evaluatedice[i+1], 1)
@@ -91,7 +92,6 @@ func dice(players int, dices int) {
 			break
 		}
 	}
-
 	var winner, loser int
 	for player, val := range playerpoint {
 		if winner < val && len(diceplayers[player]) == 0 {
@@ -105,6 +105,10 @@ func dice(players int, dices int) {
 	fmt.Printf("Game dimenangkan oleh pemain #%d karena memiliki poin lebih banyak dari pemain lainnya\n", winner)
 }
 
+func Channel() {
+
+}
+
 func main() {
 	var players, dices int
 	fmt.Printf("Masukan jumlah player: ")
@@ -112,4 +116,37 @@ func main() {
 	fmt.Printf("Masukan jumlah dadu: ")
 	fmt.Scanf("%d\n", &dices)
 	dice(players, dices)
+
+	// messages := make(chan string, 10)
+
+	// for i := 0; i < 10; i++ {
+	// 	req := uuid.New().String()
+	// 	messages <- req
+	// }
+	// close(messages)
+
+	// for val := range messages {
+	// 	fmt.Println(val)
+	// }
+
+	// arr := []int{}
+	// wg := &sync.WaitGroup{}
+	// request := []int{1, 2, 3, 4, 5}
+	// wg.Add(len(request))
+	// numbers := make(chan int)
+	// go func(numbers <-chan int) {
+	// 	for val := range numbers {
+	// 		arr = append(arr, val)
+	// 	}
+	// }(numbers)
+	// for _, val := range request {
+	// 	go func(wg *sync.WaitGroup, i int) {
+	// 		defer wg.Done()
+	// 		numbers <- i
+	// 	}(wg, val)
+	// }
+	// wg.Wait()
+	// close(numbers)
+	// fmt.Println(arr)
+
 }
